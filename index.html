@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Smart Mirror Style</title>
+<meta name="description" content="Moda y cuidado textil inteligente — Smart Mirror Style">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --gold: #C9A96E;
+    --gold-light: #E8D5AF;
+    --dark: #1A1814;
+    --muted: #8A8680;
+    --border: rgba(201,169,110,0.2);
+  }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--dark);
+    color: #EAE6DF;
+    overflow-x: hidden;
+  }
+
+  nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1.2rem 3rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.3rem;
+    letter-spacing: 0.04em;
+    color: var(--gold);
+  }
+
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+
+  .nav-links a {
+    font-size: 0.82rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+
+  .nav-links a:hover { color: var(--gold); }
+
+  .nav-cta {
+    font-size: 0.8rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 0.6rem 1.4rem;
+    border: 0.5px solid var(--gold);
+    color: var(--gold);
+    background: transparent;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .nav-cta:hover { background: var(--gold); color: var(--dark); }
+
+  .hero {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
+    padding: 4rem 3rem;
+    gap: 3rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .hero-eyebrow {
+    font-size: 0.75rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+    display: flex; align-items: center; gap: 0.8rem;
+  }
+
+  .hero-eyebrow::before {
+    content: '';
+    display: block;
+    width: 32px; height: 0.5px;
+    background: var(--gold);
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 3.2rem;
+    line-height: 1.1;
+    margin-bottom: 1.2rem;
+    font-weight: 400;
+  }
+
+  .hero h1 em { font-style: italic; color: var(--gold); }
+
+  .hero-desc {
+    font-size: 0.95rem;
+    color: var(--muted);
+    line-height: 1.8;
+    margin-bottom: 2rem;
+    font-weight: 300;
+  }
+
+  .hero-actions { display: flex; gap: 1rem; align-items: center; }
+
+  .btn-primary {
+    padding: 0.9rem 2rem;
+    background: var(--gold);
+    color: var(--dark);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    font-weight: 500;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover { background: var(--gold-light); }
+
+  .btn-ghost {
+    padding: 0.9rem 1.5rem;
+    background: transparent;
+    color: var(--muted);
+    border: none;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.82rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: color 0.2s;
+  }
+
+  .btn-ghost:hover { color: #EAE6DF; }
+
+  .hero-visual { display: flex; justify-content: center; }
+
+  .mirror-frame {
+    width: 260px; height: 380px;
+    border: 1px solid var(--gold);
+    border-radius: 50% 50% 48% 48% / 12% 12% 8% 8%;
+    position: relative;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    background: rgba(201,169,110,0.03);
+    overflow: hidden;
+  }
+
+  .mirror-frame::before {
+    content: '';
+    position: absolute; inset: 8px;
+    border: 0.5px solid rgba(201,169,110,0.15);
+    border-radius: inherit;
+    pointer-events: none;
+  }
+
+  .mirror-ai-badge {
+    position: absolute; top: 52px;
+    background: rgba(201,169,110,0.1);
+    border: 0.5px solid var(--border);
+    padding: 0.3rem 0.9rem;
+    font-size: 0.7rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+
+  .mirror-icon {
+    font-size: 3.5rem;
+    color: rgba(201,169,110,0.12);
+    line-height: 1;
+  }
+
+  .mirror-tags {
+    position: absolute; bottom: 48px;
+    display: flex; flex-direction: column; gap: 0.4rem;
+    align-items: center;
+    width: 100%; padding: 0 1.5rem;
+  }
+
+  .mirror-tag {
+    background: rgba(26,24,20,0.85);
+    border: 0.5px solid var(--border);
+    padding: 0.3rem 0.8rem;
+    font-size: 0.68rem;
+    color: var(--gold-light);
+    letter-spacing: 0.05em;
+    width: 100%; text-align: center;
+  }
+
+  .stats-bar {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .stat {
+    text-align: center;
+    padding: 1.8rem 1rem;
+    border-right: 0.5px solid var(--border);
+  }
+
+  .stat:last-child { border-right: none; }
+
+  .stat-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--gold);
+    font-weight: 400;
+    display: block;
+  }
+
+  .stat-label {
+    font-size: 0.72rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-top: 0.3rem;
+  }
+
+  .section { padding: 3.5rem 3rem; border-bottom: 0.5px solid var(--border); }
+
+  .section-eyebrow {
+    font-size: 0.72rem;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.5rem;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    font-weight: 400;
+    margin-bottom: 2rem;
+    line-height: 1.2;
+  }
+
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    border: 0.5px solid var(--border);
+  }
+
+  .service-card {
+    padding: 2rem 1.8rem;
+    border-right: 0.5px solid var(--border);
+    transition: background 0.25s;
+  }
+
+  .service-card:last-child { border-right: none; }
+  .service-card:hover { background: #211F1A; }
+
+  .service-num {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: rgba(201,169,110,0.15);
+    display: block;
+    margin-bottom: 1rem;
+  }
+
+  .service-name {
+    font-size: 0.92rem;
+    font-weight: 500;
+    margin-bottom: 0.7rem;
+  }
+
+  .service-desc {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.7;
+    font-weight: 300;
+  }
+
+  .team-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 1.2rem;
+    margin-top: 2rem;
+  }
+
+  .team-card { text-align: center; }
+
+  .team-avatar {
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto 0.7rem;
+    background: rgba(201,169,110,0.06);
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+  }
+
+  .team-name { font-size: 0.8rem; font-weight: 500; margin-bottom: 0.2rem; }
+  .team-role { font-size: 0.7rem; color: var(--muted); letter-spacing: 0.06em; }
+
+  .contact-section {
+    padding: 3.5rem 3rem;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    border-bottom: 0.5px solid var(--border);
+  }
+
+  .contact-info h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    font-weight: 400;
+    margin-bottom: 1.8rem;
+  }
+
+  .contact-item {
+    display: flex; align-items: flex-start; gap: 1rem;
+    margin-bottom: 1.2rem;
+  }
+
+  .contact-icon {
+    width: 32px; height: 32px;
+    border: 0.5px solid var(--border);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 0.85rem;
+    flex-shrink: 0;
+  }
+
+  .contact-label {
+    font-size: 0.7rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--muted);
+    margin-bottom: 0.15rem;
+  }
+
+  .contact-value { font-size: 0.88rem; }
+
+  .contact-form { display: flex; flex-direction: column; gap: 0.8rem; }
+
+  .contact-form input,
+  .contact-form textarea {
+    background: transparent;
+    border: 0.5px solid var(--border);
+    padding: 0.8rem 1rem;
+    color: #EAE6DF;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.85rem;
+    outline: none;
+    transition: border-color 0.2s;
+    width: 100%;
+  }
+
+  .contact-form input::placeholder,
+  .contact-form textarea::placeholder { color: var(--muted); }
+
+  .contact-form input:focus,
+  .contact-form textarea:focus { border-color: var(--gold); }
+
+  .contact-form textarea { height: 100px; resize: none; }
+
+  footer {
+    padding: 1.5rem 3rem;
+    display: flex; justify-content: space-between; align-items: center;
+  }
+
+  .footer-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--gold);
+  }
+
+  .footer-text { font-size: 0.72rem; color: var(--muted); }
+
+  @media (max-width: 768px) {
+    nav { padding: 1rem 1.5rem; }
+    .nav-links { display: none; }
+    .hero { grid-template-columns: 1fr; padding: 2rem 1.5rem; }
+    .hero-visual { display: none; }
+    .hero h1 { font-size: 2.2rem; }
+    .stats-bar { grid-template-columns: 1fr; }
+    .stat { border-right: none; border-bottom: 0.5px solid var(--border); }
+    .stat:last-child { border-bottom: none; }
+    .services-grid { grid-template-columns: 1fr; }
+    .service-card { border-right: none; border-bottom: 0.5px solid var(--border); }
+    .service-card:last-child { border-bottom: none; }
+    .team-grid { grid-template-columns: repeat(3, 1fr); }
+    .contact-section { grid-template-columns: 1fr; gap: 2rem; padding: 2rem 1.5rem; }
+    .section { padding: 2.5rem 1.5rem; }
+    footer { padding: 1.2rem 1.5rem; flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <div class="logo">Smart Mirror Style</div>
+  <ul class="nav-links">
+    <li><a href="#">Inicio</a></li>
+    <li><a href="#">Servicios</a></li>
+    <li><a href="#">Equipo</a></li>
+    <li><a href="#">Contacto</a></li>
+  </ul>
+  <button class="nav-cta">Comenzar</button>
+</nav>
+
+<section class="hero">
+  <div>
+    <p class="hero-eyebrow">IA + Moda + Cuidado textil</p>
+    <h1>Tu guardarropa, <em>inteligente</em></h1>
+    <p class="hero-desc">Combinamos inteligencia artificial con el mundo de la moda para brindarte recomendaciones personalizadas y cuidado textil de vanguardia.</p>
+    <div class="hero-actions">
+      <button class="btn-primary">Explorar ahora</button>
+      <button class="btn-ghost">Ver servicios →</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <div class="mirror-frame">
+      <div class="mirror-ai-badge">AI Powered</div>
+      <div class="mirror-icon">◈</div>
+      <div class="mirror-tags">
+        <div class="mirror-tag">Recomendación personalizada</div>
+        <div class="mirror-tag">Guía de cuidado textil</div>
+        <div class="mirror-tag">Asesoría virtual de imagen</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="stats-bar">
+  <div class="stat">
+    <span class="stat-num">3+</span>
+    <div class="stat-label">Servicios especializados</div>
+  </div>
+  <div class="stat">
+    <span class="stat-num">IA</span>
+    <div class="stat-label">Tecnología de punta</div>
+  </div>
+  <div class="stat">
+    <span class="stat-num">100%</span>
+    <div class="stat-label">Experiencia personalizada</div>
+  </div>
+</div>
+
+<section class="section">
+  <p class="section-eyebrow">Nuestros servicios</p>
+  <h2 class="section-title">Lo que ofrecemos</h2>
+  <div class="services-grid">
+    <div class="service-card">
+      <span class="service-num">01</span>
+      <div class="service-name">Asesoría de imagen virtual</div>
+      <p class="service-desc">Análisis de estilo personalizado con inteligencia artificial que aprende tus preferencias.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">02</span>
+      <div class="service-name">Recomendaciones de moda</div>
+      <p class="service-desc">Outfits sugeridos según tu estilo, ocasión y temporada, combinando prendas de tu armario.</p>
+    </div>
+    <div class="service-card">
+      <span class="service-num">03</span>
+      <div class="service-name">Guía de cuidado textil</div>
+      <p class="service-desc">Instrucciones para lavar, planchar y conservar cada prenda según su tejido y composición.</p>
+    </div>
+  </div>
+</section>
+
+<section class="section">
+  <p class="section-eyebrow">Nuestro equipo</p>
+  <h2 class="section-title">Las personas detrás de Smart Mirror</h2>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-avatar">VP</div>
+      <div class="team-name">Victor Paniagua</div>
+      <div class="team-role">Líder</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">MR</div>
+      <div class="team-name">Manuel Romero</div>
+      <div class="team-role">Creativo</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">LC</div>
+      <div class="team-name">Luis Carranza</div>
+      <div class="team-role">Creativo</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">AC</div>
+      <div class="team-name">Andrea Cortez</div>
+      <div class="team-role">Secretaria</div>
+    </div>
+    <div class="team-card">
+      <div class="team-avatar">NS</div>
+      <div class="team-name">Natalia Soribel</div>
+      <div class="team-role">Presentadora</div>
+    </div>
+  </div>
+</section>
+
+<section class="contact-section">
+  <div class="contact-info">
+    <h2>Contáctanos</h2>
+    <div class="contact-item">
+      <div class="contact-icon">📍</div>
+      <div>
+        <div class="contact-label">Ubicación</div>
+        <div class="contact-value">El Triunfo, Usulután, El Salvador</div>
+      </div>
+    </div>
+    <div class="contact-item">
+      <div class="contact-icon">📘</div>
+      <div>
+        <div class="contact-label">Redes sociales</div>
+        <div class="contact-value">@pagina_de_Facebook</div>
+      </div>
+    </div>
+  </div>
+  <div class="contact-form">
+    <input type="text" placeholder="Tu nombre">
+    <input type="email" placeholder="Tu correo electrónico">
+    <textarea placeholder="Tu mensaje..."></textarea>
+    <button class="btn-primary" style="align-self:flex-start;">Enviar mensaje</button>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">Smart Mirror Style</div>
+  <div class="footer-text">© 2026 Smart Mirror Style · El Salvador · Moda y cuidado textil inteligente</div>
+</footer>
+
+</body>
+</html>
